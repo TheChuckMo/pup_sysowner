@@ -1,13 +1,16 @@
 {
-  "author": "",
-  "dependencies": [],
-  "license": "",
-  "name": "morelanc-sysowner",
-  "operatingsystem_support": [],
-  "project_page": "",
-  "requirements": [],
-  "source": "",
-  "summary": "",
-  "tags": [],
-  "version": "0.1.0"
+  "name": "thechuckmo-sysowner",
+  "version": "0.1.0",
+  "author": "thechuckmo",
+  "summary": "manage system owners",
+  "license": "Apache 2.0",
+  "source": "https://github.com/TheChuckMo/sysowner",
+  "project_page": "https://github.com/TheChuckMo/sysowner",
+  "issues_url": null,
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+  ]
 }
