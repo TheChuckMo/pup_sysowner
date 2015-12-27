@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 #
-# future script to install patches based on sysowner module cron configuration
+# script stub for patch installs
 #
+echo "patch install not supported currently"

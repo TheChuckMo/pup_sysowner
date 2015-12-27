@@ -13,8 +13,9 @@ system_note: <%= $sysowner::system_note %>
 # system support info
 support_team: <%= $sysowner::support_team %>
 support_level: <%= $sysowner::support_level %>
-support_contract: <%= $sysowner::support_contract %>
+support_contact: <%= $sysowner::support_contact %>
 support_qpage: <%= $sysowner::support_qpage %>
 # system patch info
 patch_control: <%= $sysowner::patch_control %>
 patch_reboot: <%= $sysowner::patch_reboot %>
+patch_method: <%= $sysowner::patch_method %>

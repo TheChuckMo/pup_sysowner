@@ -7,32 +7,29 @@ class sysowner (
   $system_owners    = [], # array of owners
   $system_groups    = [], # array of groups
   $system_role      = 'general', # system role - general | web | mysql | oracle | etl | epic
-  $system_oraclient = false, # will oracle client be installed
+    # used in hiera ex: "roles/%{::sysowner:system_role}" => roles/web.yaml
   $system_note      = 'General Purpose Server', # free text to describe the server
   # Support information for system
-  $support_team     = 'UCAT', # free text of support team name
+  $support_team     = 'unix team', # free text of support team name
   $support_level    = 'no-page', # work-day | 24x7 | backup-only | no-page
-  $support_contact  = 'ucat@ohsu.edu', # support contact email
-  $support_qpage    = 'unix_oncall', # support qpage contact
+  $support_contact  = 'root@localhost', # support contact email
+  # Optional parameter
+  $oracle_client = false, # configure for oracle client install
+    # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
   # module behavior control
   $fact_template    = "sysowner/system_owner_facts.epp", # EPP template for fact file
   $fact_file        = "/etc/facter/facts.d/system_owner_facts.yaml", # location of fact file on system
-  # Python control
-  # TODO: will write yaml for facts instead - no python needed now!
-  $python_install   = false, # should the module install python
-  $python_pkg       = "python", # name of package with python
-  $python_yaml_pkg  = "PyYAML", # name of package with python PyYAML module
   # Patch details for system
-  # TODO: patch control will come in v2 - ignore for now
-  # TODO: too much choice for patch install - maybe: monthly, quarterly, yearly
-  $patch_control    = false, # should sysowner manage patch installs
-  $patch_reboot     = true, # should system reboot after patch install
-  $patch_hour       = '3', # hour of the day for patch install
+  $patch_method     = 'disable', # how to patch - yum-cron | cron
+    # cron: runs script from cron
+    # yum-cron: uses
+  $patch_reboot     = false, # should system reboot after patch install
   $patch_minute     = '0', # minute of the hour for patch install
-  $patch_weekday    = '1', # day of week for patch install
-  $patch_month      = '3,6,9,13', # month of the year for patch install
+  $patch_hour       = '3', # hour of the day for patch install
   $patch_monthday   = '15', # day of month for patch install
-  $patch_script_src = 'files/sysowner_patch_install.sh', # cron script source for patch install
+  $patch_month      = '3,6,9,13', # month of the year for patch install
+  $patch_weekday    = '1', # day of week for patch install
+  $patch_script_src = 'sysowner/files/sysowner_patch_install.sh', # cron script source for patch install
   $patch_script_dst = '/usr/local/bin/sysowner_patch_install.sh', # cron script destination for patch install
 )
 {
@@ -41,22 +38,50 @@ class sysowner (
   if ! is_array($system_groups) and ! empty($system_groups) { fail("system groups not a valid array.")}
   if ! is_string($system_note) { fail("system note not a valid string.")}
 
-  # are we managing python install?
-  if $python_install {
-    package { 'python':
-      name => $python_pkg,
-      ensure => installed,
-    }
-    package { 'python-yaml':
-      name => $python_yaml_pkg,
-      ensure => installed,
-      require => Package['python'],
-    }
-  }
-
+  # Yep, this is the module...
   file { "$fact_file":
     ensure => file,
     content => epp($fact_template),
+    owner => 'root',
+    group => 'puppet',
+    mode => '0644',
   }
-  
+
+  # define patch_method settings
+  case $patch_method {
+    'yum-crom': {
+      $patch_script_ensure = 'absent'
+      $cron_entry_ensure = 'absent'
+    }
+    'cron':     {
+      $patch_script_ensure = 'file'
+      $cron_entry_ensure = 'present'
+    }
+    default:    {
+      $patch_method = 'disable'
+      $patch_script_ensure = 'absent'
+      $cron_entry_ensure = 'absent'
+    }
+  }
+
+  # patch script configuration
+  file { "$patch_script_dst":
+    ensure => $patch_script_ensure,
+    source => $patch_script_src,
+    owner => 'root',
+    group => 'root',
+    mode => '0755',
+  }
+
+  # patch script cron entry
+  cron { 'syswoner-patch-install':
+    ensure => $cron_entry_ensure,
+    command => "$patch_script_dst 2>&1 >/dev/null",
+    user => 'root',
+    minute => $patch_minute,
+    hour => $patch_hour,
+    monthday => $patch_monthday,
+    month => $patch_month,
+    weekday => $patch_weekday,
+  }
 }
