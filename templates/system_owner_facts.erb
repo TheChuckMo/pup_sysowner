@@ -1,0 +1,20 @@
+---
+# file managed by puppet - DO NOT CHANGE!
+# system owner info
+system_owners:
+<% for @owner in @system_owners %>
+   - <%= @owner %>
+<% end -%>
+system_groups:
+<% for @group in @system_groups %>
+   - <%= @group %>
+<% end -%>
+system_note: <%= @system_note %>
+# system support info
+support_team: <%= @support_team %>
+support_level: <%= @sysowner::support_level %>
+support_contact: <%= @sysowner::support_contact %>
+support_qpage: <%= @sysowner::support_qpage %>
+# system patch info
+patch_method: <%= @sysowner::patch_method %>
+patch_reboot: <%= @sysowner::patch_reboot %>
