@@ -16,6 +16,5 @@ support_level: <%= $sysowner::support_level %>
 support_contact: <%= $sysowner::support_contact %>
 support_qpage: <%= $sysowner::support_qpage %>
 # system patch info
-patch_control: <%= $sysowner::patch_control %>
-patch_reboot: <%= $sysowner::patch_reboot %>
 patch_method: <%= $sysowner::patch_method %>
+patch_reboot: <%= $sysowner::patch_reboot %>

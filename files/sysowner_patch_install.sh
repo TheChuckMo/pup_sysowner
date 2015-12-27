@@ -2,4 +2,4 @@
 #
 # script stub for patch installs
 #
-echo "patch install not supported currently"
+echo "patch install not supported"

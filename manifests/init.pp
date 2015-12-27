@@ -21,6 +21,7 @@ class sysowner (
   $fact_file        = "/etc/facter/facts.d/system_owner_facts.yaml", # location of fact file on system
   # Patch details for system
   $patch_method     = 'disable', # how to patch - yum-cron | cron
+    # disable: do nothing *default*
     # cron: runs script from cron
     # yum-cron: uses
   $patch_reboot     = false, # should system reboot after patch install
@@ -33,12 +34,18 @@ class sysowner (
   $patch_script_dst = '/usr/local/bin/sysowner_patch_install.sh', # cron script destination for patch install
 )
 {
-  # variable verification
-  if ! is_array($system_owners) and ! empty($system_owners) { fail("system owners not a valid array.")}
-  if ! is_array($system_groups) and ! empty($system_groups) { fail("system groups not a valid array.")}
-  if ! is_string($system_note) { fail("system note not a valid string.")}
 
-  # Yep, this is the module...
+  # verify system_owners and system_groups
+  validate_array($system_owners)
+  validate_array($system_groups)
+
+  # verify oracle_client boolean
+  validate_bool($oracle_client)
+
+  # verify support patch method
+  validate_re($patch_method, [ '^disable', '^cron', '^yum-cron'])
+
+  # fact file for system
   file { "$fact_file":
     ensure => file,
     content => epp($fact_template),
@@ -49,18 +56,28 @@ class sysowner (
 
   # define patch_method settings
   case $patch_method {
-    'yum-crom': {
+    'yum-cron': {
       $patch_script_ensure = 'absent'
       $cron_entry_ensure = 'absent'
+      $yum_cron_ensure = 'present'
+      $yum_cron_enable = true
+
+
+      include ::yum-cron
     }
     'cron':     {
       $patch_script_ensure = 'file'
       $cron_entry_ensure = 'present'
+      $yum_cron_ensure = 'absent'
+      $yum_cron_enable = false
+
     }
     default:    {
       $patch_method = 'disable'
       $patch_script_ensure = 'absent'
       $cron_entry_ensure = 'absent'
+      $yum_cron_ensure = 'absent'
+      $yum_cron_enable = false
     }
   }
 
@@ -84,4 +101,7 @@ class sysowner (
     month => $patch_month,
     weekday => $patch_weekday,
   }
+
+  # configure yum-cron
+
 }
