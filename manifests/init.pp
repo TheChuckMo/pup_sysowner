@@ -17,7 +17,7 @@ class sysowner (
   $oracle_client = false, # configure for oracle client install
     # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
   # module behavior control
-  $fact_template    = "sysowner/system_owner_facts.epp", # EPP template for fact file
+  $fact_template    = "sysowner/system_owner_facts.erb", # ERB template for fact file
   $fact_file        = "/etc/facter/facts.d/system_owner_facts.yaml", # location of fact file on system
   # Patch details for system
   $patch_method     = 'disable', # how to patch - yum-cron | cron
