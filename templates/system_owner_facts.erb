@@ -9,12 +9,20 @@ system_groups:
 <% for @group in @system_groups %>
    - <%= @group %>
 <% end -%>
+system_role: <%= @system_role %>
 system_note: <%= @system_note %>
 # system support info
 support_team: <%= @support_team %>
-support_level: <%= @sysowner::support_level %>
-support_contact: <%= @sysowner::support_contact %>
-support_qpage: <%= @sysowner::support_qpage %>
+support_level: <%= @support_level %>
+support_contact: <%= @support_contact %>
+support_qpage: <%= @support_qpage %>
 # system patch info
-patch_method: <%= @sysowner::patch_method %>
-patch_reboot: <%= @sysowner::patch_reboot %>
+patch_method: <%= @patch_method %>
+<% if @patch_method == 'cron' -%>
+patch_reboot: <%= @patch_reboot %>
+patch_script: <%= @patch_script_dst %>
+patch_cron: <%= @patch_minute %> <%= @patch_hour %> <%= @patch_monthday %> <%= @patch_month %> <%= @patch_weekday %>
+<% end -%>
+<% if @patch_method == 'yum-cron' -%>
+
+<% end -%>

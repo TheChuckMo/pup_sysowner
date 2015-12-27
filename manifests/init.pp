@@ -25,12 +25,12 @@ class sysowner (
     # cron: runs script from cron
     # yum-cron: uses
   $patch_reboot     = false, # should system reboot after patch install
-  $patch_minute     = '0', # minute of the hour for patch install
+  $patch_minute     = '15', # minute of the hour for patch install
   $patch_hour       = '3', # hour of the day for patch install
   $patch_monthday   = '15', # day of month for patch install
-  $patch_month      = '3,6,9,13', # month of the year for patch install
+  $patch_month      = '*', # month of the year for patch install
   $patch_weekday    = '1', # day of week for patch install
-  $patch_script_src = 'sysowner/files/sysowner_patch_install.sh', # cron script source for patch install
+  $patch_script_src = 'puppet:///modules/sysowner/sysowner_patch_install.sh', # cron script source for patch install
   $patch_script_dst = '/usr/local/bin/sysowner_patch_install.sh', # cron script destination for patch install
 )
 {
@@ -73,7 +73,6 @@ class sysowner (
 
     }
     default:    {
-      $patch_method = 'disable'
       $patch_script_ensure = 'absent'
       $cron_entry_ensure = 'absent'
       $yum_cron_ensure = 'absent'
