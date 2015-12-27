@@ -1,0 +1,20 @@
+---
+# file managed by puppet - DO NOT CHANGE!
+# system owner info
+system_owners:
+<% $sysowner::system_owners.flatten.each |$owner| { %>
+   - <%= $owner %>
+<% } -%>
+system_groups:
+<% $sysowner::system_groups.flatten.each |$group| { %>
+   - <%= $group %>
+<% } -%>
+system_note: <%= $sysowner::system_note %>
+# system support info
+support_team: <%= $sysowner::support_team %>
+support_level: <%= $sysowner::support_level %>
+support_contract: <%= $sysowner::support_contract %>
+support_qpage: <%= $sysowner::support_qpage %>
+# system patch info
+patch_control: <%= $sysowner::patch_control %>
+patch_reboot: <%= $sysowner::patch_reboot %>
