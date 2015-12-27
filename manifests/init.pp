@@ -48,7 +48,7 @@ class sysowner (
   # fact file for system
   file { "$fact_file":
     ensure => file,
-    content => epp($fact_template),
+    content => template($fact_template),
     owner => 'root',
     group => 'puppet',
     mode => '0644',
