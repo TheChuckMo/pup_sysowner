@@ -56,8 +56,9 @@ sysowner::patch_weekday:    '1'
 sysowner::patch_script_src: 'puppet:///modules/sysowner/sysowner_patch_install.sh'
 sysowner::patch_script_dst: '/usr/local/bin/sysowner_patch_install.sh'
 ```
-#### yum-cron *defaults*
+#### yum_cron *defaults*
 ```
+sysowner::patch_method:     'yum_cron'
 sysowner::patch_apply_updates:      false
 sysowner::patch_download_updates:   true
 sysowner::patch_days_of_week:       '12345'
