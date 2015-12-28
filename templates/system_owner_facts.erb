@@ -2,11 +2,11 @@
 # file managed by puppet - DO NOT CHANGE!
 # system owner info
 system_owners:
-<% for @owner in @system_owners %>
-   - <%= @owner %>
+<% for @owner in @system_owners -%>
+   - <%= @owner -%>
 <% end -%>
 system_groups:
-<% for @group in @system_groups %>
+<% for @group in @system_groups -%>
    - <%= @group %>
 <% end -%>
 system_role: <%= @system_role %>
@@ -24,5 +24,8 @@ patch_script: <%= @patch_script_dst %>
 patch_cron: <%= @patch_minute %> <%= @patch_hour %> <%= @patch_monthday %> <%= @patch_month %> <%= @patch_weekday %>
 <% end -%>
 <% if @patch_method == 'yum-cron' -%>
-
+patch_apply_updates: <%= @patch_apply_updates %>
+patch_download_updates: <%= @patch_download_updates %>
+patch_days_of_week: <%= @patch_days_of_week %>
+patch_upgrade_cmd: <%= @patch_upgrade_cmd %>
 <% end -%>
