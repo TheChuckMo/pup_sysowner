@@ -1,10 +1,10 @@
 {
   "name": "thechuckmo-sysowner",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "thechuckmo",
   "summary": "manage system owners",
   "license": "Apache 2.0",
-  "source": "https://github.com/TheChuckMo/sysowner",
+  "source": "https://github.com/TheChuckMo/sysowner.git",
   "project_page": "https://github.com/TheChuckMo/sysowner",
   "issues_url": null,
   "dependencies": [
