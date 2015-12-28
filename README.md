@@ -64,13 +64,16 @@ sysowner::patch_download_updates:   true
 sysowner::patch_days_of_week:       '12345'
 sysowner::patch_update_cmd:        'minimal-security'
 ```
-##### sysowner::patch_update_cmd
-  - default                            = yum upgrade
-  - security                           = yum --security upgrade
-  - security-severity:Critical         = yum --sec-severity=Critical upgrade
-  - minimal                            = yum --bugfix upgrade-minimal
-  - *minimal-security*                   = yum --security upgrade-minimal
-  - minimal-security-severity:Critical =  --sec-severity=Critical upgrade-minimal
+##### sysowner::patch_update_cmd (only valid on EL7)
+  - [treydock/yum_cron::update_cmd](https://forge.puppetlabs.com/treydock/yum_cron#update_cmd)
+  - *sysowner defaults to minimal-security*
+
+ > default                            = yum upgrade
+ > security                           = yum --security upgrade
+ > security-severity:Critical         = yum --sec-severity=Critical upgrade
+ > minimal                            = yum --bugfix upgrade-minimal
+ > *minimal-security*                   = yum --security upgrade-minimal
+ > minimal-security-severity:Critical =  --sec-severity=Critical upgrade-minimal
 
 ## Facts Created
 ```
