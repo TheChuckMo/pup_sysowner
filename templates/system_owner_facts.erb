@@ -22,9 +22,9 @@ patch_reboot: <%= @patch_reboot %>
 patch_script: <%= @patch_script_dst %>
 patch_cron: <%= @patch_minute %> <%= @patch_hour %> <%= @patch_monthday %> <%= @patch_month %> <%= @patch_weekday %>
 <% end -%>
-<% if @patch_method == 'yum-cron' -%>
-patch_apply_updates: <%= @patch_apply_updates %>
+<% if @patch_method == 'yum_cron' -%>
 patch_download_updates: <%= @patch_download_updates %>
 patch_days_of_week: <%= @patch_days_of_week %>
 patch_update_cmd: <%= @patch_update_cmd %>
+patch_apply_updates: <%= @patch_apply_updates %>
 <% end -%>
