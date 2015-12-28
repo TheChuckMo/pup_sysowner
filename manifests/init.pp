@@ -13,6 +13,7 @@ class sysowner (
   $support_team     = 'unix team', # free text of support team name
   $support_level    = 'no-page', # work-day | 24x7 | backup-only | no-page
   $support_contact  = 'root@localhost', # support contact email
+  $support_pager    = 'unix-team', # support contact pager
   # Optional parameters (one-off custom configs)
   $oracle_client = false, # configure for oracle client install
     # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
