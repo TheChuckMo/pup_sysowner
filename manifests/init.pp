@@ -37,7 +37,7 @@ class sysowner (
   $patch_apply_updates    = false, # will apply updates after download
   $patch_download_updates = true, # must me true if apply_updates true
   $patch_days_of_week     = '12345', # only check on work-days
-  $patch_upgrade_cmd      = 'minimal-security', # only valid for =>EL7
+  $patch_update_cmd      = 'minimal-security', # only valid for =>EL7
     # default                            = yum upgrade
     # security                           = yum --security upgrade
     # security-severity:Critical         = yum --sec-severity=Critical upgrade
@@ -127,6 +127,6 @@ class sysowner (
     apply_updates => $patch_apply_updates,
     download_updates => $patch_download_updates,
     days_of_week => $patch_days_of_week,
-    upgrade_cmd => $patch_upgrade_cmd,
+    update_cmd => $patch_update_cmd,
   }
 }

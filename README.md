@@ -8,7 +8,7 @@
   - system_owners: free form array of "system owners", could be emails, local account, names
   - system_groups: free form array of "system owner groups", AD groups, local unix groups, team names
   - system_role: free form string. ex: general | web | mysql | oracle | etl | epic
-    - can be used in hiera. ex: "roles/%{::sysowner:system_role}" => roles/web.yaml
+    - use in hiera. ex: "roles/%{::sysowner:system_role}" => roles/web.yaml
   - system_note: free form string to describe the server
   
 ```
@@ -33,7 +33,7 @@ sysowner::support_contact: 'root@localhost'
 
 ### Optional parameters (one-off custom configs)
   - oracle_client: configure for oracle client install
-    - user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
+    - use in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
   
 ```
 sysowner::oracle_client = false
