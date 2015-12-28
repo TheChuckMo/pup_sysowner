@@ -15,7 +15,7 @@
 sysowner::system_owners: 
   - Henry Winkler
 sysowner::system_groups:
-   - AD HW Fan
+   - AD HW Fans
 sysowner::system_role: 'general'
 sysowner::system_note: 'General Purpose Server'
 ```
