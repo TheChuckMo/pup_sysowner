@@ -94,7 +94,7 @@ patch_method => cron
 patch_cron => 45 3 15 * 1
 patch_script => /usr/local/bin/sysowner_patch_install.sh
 ```
-### patch_method: yum-cron
+### patch_method: yum_cron
 ```
 patch_method => yum_cron
 patch_days_of_week => 12345
