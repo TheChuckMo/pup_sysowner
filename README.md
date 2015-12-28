@@ -1,4 +1,4 @@
-# Class: sysowner #
+# Class: sysowner
 
  Manage system owners and groups, system role, and patch updating. 
 
@@ -44,7 +44,7 @@ sysowner::oracle_client = false
 ```
 sysowner::patch_method: 'disable'
 ```
-#### cron
+#### cron *defaults*
 ```
 sysowner::patch_method:     'cron'
 sysowner::patch_reboot:     false, 
@@ -56,13 +56,22 @@ sysowner::patch_weekday:    '1'
 sysowner::patch_script_src: 'puppet:///modules/sysowner/sysowner_patch_install.sh'
 sysowner::patch_script_dst: '/usr/local/bin/sysowner_patch_install.sh'
 ```
-#### yum-cron
+#### yum-cron *defaults*
 ```
 sysowner::patch_apply_updates:      false
 sysowner::patch_download_updates:   true
 sysowner::patch_days_of_week:       '12345'
-sysowner::patch_upgrade_cmd:        'minimal-security'
+sysowner::patch_update_cmd:        'minimal-security'
 ```
+##### sysowner::patch_update_cmd
+  - default                            = yum upgrade
+  - security                           = yum --security upgrade
+  - security-severity:Critical         = yum --sec-severity=Critical upgrade
+  - minimal                            = yum --bugfix upgrade-minimal
+  - *minimal-security*                   = yum --security upgrade-minimal
+  - minimal-security-severity:Critical =  --sec-severity=Critical upgrade-minimal
+
+## Facts Created
 
 ## Requires
 
