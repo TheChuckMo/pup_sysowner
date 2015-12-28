@@ -72,6 +72,30 @@ sysowner::patch_update_cmd:        'minimal-security'
   - minimal-security-severity:Critical =  --sec-severity=Critical upgrade-minimal
 
 ## Facts Created
+```
+system_groups => ["AD HW Fans"]
+system_note => General Purpose Server
+system_owners => ["Henry Winkler"]
+system_role => general
+support_contact => root@localhost
+support_level => no-page
+support_team => unix team
+```
+### patch_method: disable 
+```patch_method => disable```
+### patch_method: cron
+```
+patch_method => cron
+patch_cron => 45 3 15 * 1
+patch_script => /usr/local/bin/sysowner_patch_install.sh
+```
+### patch_method: yum-cron
+```
+patch_days_of_week => 12345
+patch_download_updates => true
+patch_method => yum_cron
+patch_update_cmd => minimal-security
+```
 
 ## Requires
 
