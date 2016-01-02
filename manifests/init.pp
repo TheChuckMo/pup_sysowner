@@ -18,8 +18,8 @@ class sysowner (
   $oracle_client = false, # configure for oracle client install
     # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
   # module behavior control
-  $fact_template    = "sysowner/system_owner_facts.erb", # ERB template for fact file
-  $fact_file        = "/etc/facter/facts.d/system_owner_facts.yaml", # location of fact file on system
+  $fact_template    = 'sysowner/system_owner_facts.erb', # ERB template for fact file
+  $fact_file        = '/etc/facter/facts.d/system_owner_facts.yaml', # location of fact file on system
   # Patch details for system
   $patch_method     = 'disable', # how to patch - yum_cron | cron
     # disable: do nothing *default*
@@ -59,12 +59,12 @@ class sysowner (
   validate_re($patch_method, [ '^disable', '^cron', '^yum_cron'])
 
   # fact file for system
-  file { "$fact_file":
-    ensure => file,
-    content => template($fact_template),
-    owner => 'root',
-    group => 'puppet',
-    mode => '0644',
+  file { $fact_file:
+    ensure    => file,
+    content   => template($fact_template),
+    owner     => 'root',
+    group     => 'puppet',
+    mode      => '0644',
   }
 
   # define patch_method settings
@@ -101,33 +101,33 @@ class sysowner (
   }
 
   # patch script configuration
-  file { "$patch_script_dst":
-    ensure => $patch_script_ensure,
-    source => $patch_script_src,
-    owner => 'root',
-    group => 'root',
-    mode => '0755',
+  file { $patch_script_dst:
+    ensure    => $patch_script_ensure,
+    source    => $patch_script_src,
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0755',
   }
 
   # patch script cron entry
   cron { 'syswoner-patch-install':
-    ensure => $cron_entry_ensure,
-    command => "$patch_script_dst 2>&1 >/dev/null",
-    user => 'root',
-    minute => $patch_minute,
-    hour => $patch_hour,
-    monthday => $patch_monthday,
-    month => $patch_month,
-    weekday => $patch_weekday,
+    ensure    => $cron_entry_ensure,
+    command   => "${patch_script_dst} 2>&1 >/dev/null",
+    user      => 'root',
+    minute    => $patch_minute,
+    hour      => $patch_hour,
+    monthday  => $patch_monthday,
+    month     => $patch_month,
+    weekday   => $patch_weekday,
   }
 
   # configure yum_cron
   class { 'yum_cron':
-    ensure => $yum_cron_ensure,
-    enable => $yum_cron_enable,
-    apply_updates => $patch_apply_updates,
-    download_updates => $patch_download_updates,
-    days_of_week => $patch_days_of_week,
-    update_cmd => $patch_update_cmd,
+    ensure            => $yum_cron_ensure,
+    enable            => $yum_cron_enable,
+    apply_updates     => $patch_apply_updates,
+    download_updates  => $patch_download_updates,
+    days_of_week      => $patch_days_of_week,
+    update_cmd        => $patch_update_cmd,
   }
 }
