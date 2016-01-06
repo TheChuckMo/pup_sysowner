@@ -1,6 +1,6 @@
 {
   "name": "thechuckmo-sysowner",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "author": "thechuckmo",
   "summary": "Manage system owner, support information, and patching methods",
   "license": "Apache-2.0",
