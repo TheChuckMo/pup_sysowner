@@ -57,6 +57,10 @@ class sysowner (
   # verify support patch method
   validate_re($patch_method, [ '^disable', '^cron', '^yum_cron'])
 
+  # ensure facter directory exists
+  file { '/etc/facter': ensure => 'directory', replace => 'no', }
+  file { '/etc/facter/facts.d': ensure => 'directory', replace => 'no', }
+
   # fact file for system
   file { "$fact_file":
     ensure => file,
@@ -124,6 +128,8 @@ class sysowner (
   class { 'yum_cron':
     ensure => $yum_cron_ensure,
     enable => $yum_cron_enable,
+    mailto => $support_contact,
+    
     apply_updates => $patch_apply_updates,
     download_updates => $patch_download_updates,
     days_of_week => $patch_days_of_week,
