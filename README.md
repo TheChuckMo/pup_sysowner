@@ -8,7 +8,7 @@
   - system_owners: free form array of "system owners", could be emails, local account, names
   - system_groups: free form array of "system owner groups", AD groups, local unix groups, team names
   - system_role: free form string. ex: general | web | mysql | oracle | etl | epic
-    * use in hiera. ex: "roles/%{::sysowner:system_role}" => roles/web.yaml
+    * use in hiera. ex: "roles/%{::system_role}" => roles/web.yaml
   - system_note: free form string to describe the server
   
 ```
@@ -33,7 +33,7 @@ sysowner::support_contact: 'root@localhost'
 
 ### Optional parameters (one-off custom configs)
   - oracle_client: configure for oracle client install
-    * use in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
+    * use in hiera ex: "clients/oracle_client_%{::oracle_client}" => clients/oracle_client_true.yaml
   
 ```
 sysowner::oracle_client = false
@@ -94,7 +94,7 @@ patch_method => cron
 patch_cron => 45 3 15 * 1
 patch_script => /usr/local/bin/sysowner_patch_install.sh
 ```
-### patch_method: yum-cron
+### patch_method: yum_cron
 ```
 patch_method => yum_cron
 patch_days_of_week => 12345

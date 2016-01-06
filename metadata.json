@@ -1,20 +1,30 @@
 {
   "name": "thechuckmo-sysowner",
-  "version": "0.5.1",
+  "version": "0.5.6",
   "author": "thechuckmo",
-  "summary": "manage system owners",
-  "license": "Apache 2.0",
-  "source": "https://github.com/TheChuckMo/sysowner",
+  "summary": "Manage system owner, support information, and patching methods",
+  "license": "Apache-2.0",
+  "source": "https://github.com/TheChuckMo/sysowner.git",
   "project_page": "https://github.com/TheChuckMo/sysowner",
-  "issues_url": null,
+  "issues_url": "https://github.com/TheChuckMo/sysowner/issues",
   "dependencies": [
     {
-      "name": "puppetlabs-stdlib",
-      "version_range": ">= 1.0.0"
+      "name": "puppetlabs/stdlib",
+      "version_range": ">=4.1.0 < 6.0"
     },
     {
       "name": "treydock-yum_cron",
-      "version_range": ">=1.3.0"
+      "version_range": ">=1.3.0 < 5.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "6.x", "7.x" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "6.x", "7.x" ]
     }
   ]
 }
