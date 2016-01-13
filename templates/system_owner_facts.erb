@@ -1,13 +1,22 @@
 ---
 # file managed by puppet - DO NOT CHANGE!
 # system owner info
+<% if @fact_multi -%>
+  <% @system_owners.each_with_index do |owner, idx| -%>
+    <%= "system_owner_#{idx}=#{owner}" %>
+  <% end -%>
+  <% @system_groups.each_with_index do |group, idx| -%>
+    <%= "system_group_#{idx}=#{group}" %>
+  <% end -%>
+<% else -%>
 system_owners:
-<% for @owner in @system_owners -%>
-   - <%= @owner %>
-<% end -%>
+  <% @system_owners.each do |owner| -%>
+    <%= "  - #{owner}" %>
+  <% end -%>
 system_groups:
-<% for @group in @system_groups -%>
-   - <%= @group %>
+  <% @system_groups.each do |group| -%>
+    <%= "  - #{group}" %>
+  <% end -%>
 <% end -%>
 system_role: <%= @system_role %>
 system_note: <%= @system_note %>
@@ -20,7 +29,7 @@ oracle_client: <%= oracle_client %>
 # system patch info
 patch_method: <%= @patch_method %>
 <% if @patch_method == 'cron' -%>
-patch_reboot: <%= @patch_reboot %>
+patch_reboot: <%= "#{sysowner::}" %>
 patch_script: <%= @patch_script_dst %>
 patch_cron: <%= @patch_minute %> <%= @patch_hour %> <%= @patch_monthday %> <%= @patch_month %> <%= @patch_weekday %>
 <% end -%>
