@@ -1,4 +1,5 @@
-############!/bin/bash
+#!/bin/bash
+
 
 puppet='/opt/puppetlabs/bin/puppet'
 builds='/vagrant'

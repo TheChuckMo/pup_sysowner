@@ -2,5 +2,6 @@
 
 import yaml
 
-with open('tree.yaml', 'r') as f:
+with open('/etc/system_owners_facts.yaml', 'r') as f:
     doc = yaml.load(f)
+

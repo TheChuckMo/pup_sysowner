@@ -65,6 +65,7 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    sudo yum makecache fast
     sudo yum update
     sudo yum install -y puppet
     #chmod 755 /vagrant/vg_mod_*.sh
