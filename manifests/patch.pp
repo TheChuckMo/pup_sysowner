@@ -86,9 +86,6 @@ class sysowner::patch (
     }
 
     # configure yum_cron
-    include yum_cron
-
-    # create the class
     class { 'yum_cron':
         ensure => $yum_cron_ensure,
         enable => $yum_cron_enable,

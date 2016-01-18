@@ -30,17 +30,24 @@ sysowner::support_team: 'unix team'
 sysowner::support_level: 'no-page'
 sysowner::support_contact: 'root@localhost'
 ```
-
-### Optional parameters (one-off custom configs)
-  - oracle_client: configure for oracle client install
-    * use in hiera ex: "clients/oracle_client_%{::oracle_client}" => clients/oracle_client_true.yaml
+### Optional client facts
+ Allows a configuration for a "client" to be defined and applied to systems across roles.  My primary use case is database clients.
+  - sysowner::clients:oracle: true              # should the components required for this client be installed
+    
+  Use in hiera:  
+  - "clients/oracle_%{::clients_oracle}"
+  - yaml file: {datadir]/clients/oracle_true.yaml
   
 ```
-sysowner::oracle_client = false
+sysowner::clients:oracle: false
 ```
-
 ### Patch methods - disable | cron | yum_cron
-#### disable 
+  Control the method of patching. 
+  - disable: Will remove script or yum_cron configuration 
+  - cron: Push out a custom script (you write) and create a cron entry to run script. 
+  - yum_cron: Use the yum_cron tool to schedule patching and set installed patch level.
+    *uses Puppet module: [treydock/yum_cron::update_cmd](https://forge.puppetlabs.com/treydock/)
+### disable 
 ```
 sysowner::patch_method: 'disable'
 ```
@@ -75,8 +82,8 @@ sysowner::patch_update_cmd:        'minimal-security'
 > *minimal-security*                   = yum --security upgrade-minimal
 > minimal-security-severity:Critical =  --sec-severity=Critical upgrade-minimal
 ```
-
 ## Facts Created
+### System Info
 ```
 system_groups => ["AD HW Fans"]
 system_note => General Purpose Server
@@ -86,8 +93,15 @@ support_contact => root@localhost
 support_level => no-page
 support_team => unix team
 ```
+### Clients 
+```
+clients_{client_key} => {client_value}
+clients_oracle => false
+```
 ### patch_method: disable 
-```patch_method => disable```
+```
+patch_method => disable
+```
 ### patch_method: cron
 ```
 patch_method => cron
@@ -101,7 +115,6 @@ patch_days_of_week => 12345
 patch_download_updates => true
 patch_update_cmd => minimal-security
 ```
-
 ## Requires
 
   - [treydock/yum_cron](https://forge.puppetlabs.com/treydock/yum_cron)

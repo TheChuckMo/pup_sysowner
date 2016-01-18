@@ -18,19 +18,28 @@ class sysowner (
   # Optional parameters (one-off custom configs)
   # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
   $oracle_client    = false, # configure for oracle client install
+  $clients          = { 'oracle' => false, }, # client facts to create ex: oracle_client = true
 
   # Control of fact file
   $fact_template    = 'sysowner/system_owner_facts.erb', # ERB template for fact file
   $fact_file        = '/etc/facter/facts.d/system_owner_facts.yaml', # location of fact file on system
   #$fact_file        = '/var/lib/puppet/lib/facter/system_owner_facts.yaml', # location of fact file on system
-  $fact_multi       = false, # sysowner1 or sysowner[1]
+  $fact_flat       = false, # sysowner1 or sysowner[1]
+  #
 ) {
   # verify system_owners and system_groups
   validate_array($system_owners)
   validate_array($system_groups)
 
+  # verify valid hash for clietns
+  #validate_array($clients)
+  validate_hash($clients)
+
   # verify oracle_client boolean
   validate_bool($oracle_client)
+
+  # verify flat fact is bool
+  validate_bool($fact_flat)
 
   # include patch control
   include sysowner::patch
@@ -49,7 +58,7 @@ class sysowner (
     ensure  => file,
     content => template($fact_template),
     owner   => 'root',
-    group   => 'puppet',
+    group   => 'root',
     mode    => '0644',
     require => Exec['make_basedir'],
   }
