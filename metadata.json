@@ -2,7 +2,7 @@
   "name": "thechuckmo-sysowner",
   "version": "0.5.9",
   "author": "thechuckmo",
-  "summary": "Manage system owner, support information, and patching methods",
+  "summary": "Manage system owner, support information, and patching method",
   "license": "Apache-2.0",
   "source": "https://github.com/TheChuckMo/sysowner.git",
   "project_page": "https://github.com/TheChuckMo/sysowner",

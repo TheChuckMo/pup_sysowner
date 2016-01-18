@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+############!/bin/bash
 
 puppet='/opt/puppetlabs/bin/puppet'
 builds='/vagrant'
@@ -17,7 +17,9 @@ if [[ -d ${builds} ]] ;then
     echo "${module} - built"
 fi
 
-if [[ -f ${module} ]] ;then
+if [[ -d ${module} ]] ;then
     echo "installing module"
     sudo $puppet module install ${module}
 fi
+
+

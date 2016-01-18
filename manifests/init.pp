@@ -23,8 +23,7 @@ class sysowner (
   # Control of fact file
   $fact_template    = 'sysowner/system_owner_facts.erb', # ERB template for fact file
   $fact_file        = '/etc/facter/facts.d/system_owner_facts.yaml', # location of fact file on system
-  #$fact_file        = '/var/lib/puppet/lib/facter/system_owner_facts.yaml', # location of fact file on system
-  $fact_flat       = false, # sysowner1 or sysowner[1]
+  $fact_flat        = false, # sysowner1 or sysowner[1]
   #
 ) {
   # verify system_owners and system_groups
