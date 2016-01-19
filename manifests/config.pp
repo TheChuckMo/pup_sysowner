@@ -8,7 +8,6 @@ class sysowner::config (
 	#
     $python_install   = true, # should the module install python
     $python_pkg       = "python", # name of package with python
-	$python_click_pip = "click", # name of click module
     $python_yaml_pkg  = "PyYAML", # name of package with python PyYAML module
 ) {
 	# verify boolean values
@@ -25,12 +24,6 @@ class sysowner::config (
             ensure => installed,
             require => Package['python'],
         }
-	    package { 'python-click':
-		    name => $python_click_pip,
-		    ensure => installed,
-		    provider => 'pip',
-		    require => Package['python'],
-	    }
     }
 
 	# base directory of fact file locaiton
