@@ -36,6 +36,7 @@ class SysOwner:
 
         if fact in self.data.keys():
             try:
+                if self.data[]
                 print '{fact}={value}'.format(fact=fact, value=self.data[fact])
 
                 return self.data[fact]

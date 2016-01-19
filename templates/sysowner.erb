@@ -33,6 +33,7 @@ config = {
     'yum_cron_update_cmd'       => scope.lookupvar("sysowner::patch::yum_cron_update_cmd"),
     'yum_cron_mailto'           => scope.lookupvar("sysowner::patch::yum_cron_mailto"),
     # config commands
+    'flat_facts'                =>  scope.lookupvar("sysowner::config::flat_facts"),
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
     # python config
