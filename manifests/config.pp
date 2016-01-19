@@ -1,20 +1,24 @@
 class sysowner::config (
-	#
-	# command configuration
-	#
-	$so_cmd           = '/usr/local/bin/sysowner',
+    #
+    # command configuration
+    #
+    $so_cmd           = '/usr/local/bin/sysowner',
     #
     # python control
-	#
+    #
     $python_install   = true, # should the module install python
     $python_pkg       = "python", # name of package with python
     $python_yaml_pkg  = "PyYAML", # name of package with python PyYAML module
-) {
-	# verify boolean values
-	validate_bool($python_install)
+    #
 
-    # are we managing python install?
-    if $python_install {
+    $flat_facts        = true, # sysowner1 or sysowner[1]
+) {
+  # verify boolean values
+  validate_bool($python_install)
+  validate_bool($flat_facts)
+
+  # are we managing python install?
+  if $python_install {
         package { 'python':
             name => $python_pkg,
             ensure => installed,
@@ -24,7 +28,7 @@ class sysowner::config (
             ensure => installed,
             require => Package['python'],
         }
-    }
+  }
 
 	# base directory of fact file locaiton
 	$bindir = dirname($so_cmd)

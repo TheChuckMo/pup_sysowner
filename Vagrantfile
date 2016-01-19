@@ -67,8 +67,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum makecache fast
     sudo yum update
-    sudo yum install -y puppet
-    #chmod 755 /vagrant/vg_mod_*.sh
-    #/vagrant/vg_mod_build.sh
+    ls -l /opt/puppetlabs/bin/puppet || sudo yum install -y puppet
+    [ ! -x /vagrant/vg_mod_build.sh ] && chmod 755 /vagrant/vg_mod_*.sh
+    [ -x /vagrant/vg_mod_build.sh ] && /vagrant/vg_mod_build.sh
   SHELL
 end

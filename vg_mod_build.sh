@@ -18,7 +18,7 @@ if [[ -d ${builds} ]] ;then
     echo "${module} - built"
 fi
 
-if [[ -d ${module} ]] ;then
+if [[ -f ${module} ]] ;then
     echo "installing module"
     sudo $puppet module install ${module}
 fi
