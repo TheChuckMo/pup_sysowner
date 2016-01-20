@@ -1,54 +1,88 @@
+#
+# sysowner core facts
+#
 require 'yaml'
 
-data = YAML.load_file('/etc/sysowner/sysowner.yaml')
+raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
 
-#puts data.inspect
-
-config = {
+data = {
     # owners
-    #'system_owners'             =>  scope.lookupvar("sysowner::system_owners"),
-    #'system_groups'             =>  scope.lookupvar("sysowner::system_groups"),
+    'system_owners'                     => raw['system_owners'],
+    'system_groups'                     => raw['system_groups'],
     # role and note
-    #'system_role'               =>  scope.lookupvar("sysowner::system_role"),
-    #'system_note'               =>  scope.lookupvar("sysowner::system_note"),
+    'system_role'                       => raw['system_role'],
+    'system_note'                       => raw['system_note'],
     # support info
-    #'support_team'              =>  scope.lookupvar("sysowner::support_team"),
-    #'support_level'             =>  scope.lookupvar("sysowner::support_level"),
-    #'support_contact'           =>  scope.lookupvar("sysowner::support_contact"),
-    #'support_pager'             =>  scope.lookupvar("sysowner::support_pager"),
+    'support_team'                      => raw['support_team'],
+    'support_level'                     => raw['support_level'],
+    'support_contact'                   => raw['support_contract'],
+    'support_pager'                     => raw['support_pager'],
     # clients
-    'clients'                   => data['clients']
-    # patch method
-    #'patch_method'              =>  scope.lookupvar("sysowner::patch::method"),
-    # cron facts
-    #'cron_reboot'               =>  scope.lookupvar("sysowner::patch::cron_reboot"),
-    #'cron_minute'               =>  scope.lookupvar("sysowner::patch::cron_minute"),
-    #'cron_hour'                 =>  scope.lookupvar("sysowner::patch::cron_hour"),
-    #'cron_monthday'             =>  scope.lookupvar("sysowner::patch::cron_monthday"),
-    #'cron_month'                =>  scope.lookupvar("sysowner::patch::cron_month"),
-    #'cron_weekday'              =>  scope.lookupvar("sysowner::patch::cron_weekday"),
-    #'cron_script_src'           =>  scope.lookupvar("sysowner::patch::cron_script_src"),
-    #'cron_script_dst'           =>  scope.lookupvar("sysowner::patch::cron_script_dst"),
-    ## yum_cron facts
-    #'yum_cron_apply_updates'    => scope.lookupvar("sysowner::patch::yum_cron_apply_updates"),
-    #'yum_cron_download_updates' => scope.lookupvar("sysowner::patch::yum_cron_download_updates"),
-    #'yum_cron_days_of_week'     => scope.lookupvar("sysowner::patch::yum_cron_days_of_week"),
-    #'yum_cron_update_cmd'       => scope.lookupvar("sysowner::patch::yum_cron_update_cmd"),
-    #'yum_cron_mailto'           => scope.lookupvar("sysowner::patch::yum_cron_mailto"),
-    # config commands
-    #'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
-    #'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
-    # python config
-    #'so_python_install'         =>  scope.lookupvar("sysowner::config::python_install"),
-    #'so_python_pkg'             =>  scope.lookupvar("sysowner::config::python_pkg"),
-    #'so_python_yaml_pkg'        =>  scope.lookupvar("sysowner::config::python_yaml_pkg")
+    'clients'                           => raw['clients'],
+    'flat_facts'                        => raw['flat_facts'],
 }
-
-Facter.add(:clients) do
-    setcode do
-        clients = config['clients']
+#
+# load all the facts
+#
+data.each do |name, value|
+    #value = data[name]
+    Facter.add(name) do
+        setcode do
+            answer = value
+        end
     end
 end
-        #clients.each do |client, value|
-        #{client}_client: #{value}"
-        #end
+#
+# clients facts
+#
+Facter.add(:clients) do
+    setcode do
+        clients = data['clients']
+    end
+end
+#
+# build clients facts
+#
+data['clients'].each_with_index do |client, idx|
+    name = "clients_#{client}"
+    Facter.add(name) do
+        setcode do
+            answer = raw['clients'][client]
+        end
+    end
+end
+
+#
+# system_owners & groups
+#
+if data['flat_facts']
+    data['system_owners'].each_with_index do |owner, idx|
+        name = "system_owners_#{idx}"
+        Facter.add(name) do
+            setcode do
+                answer = owner
+            end
+        end
+    end
+
+    data['system_groups'].each_with_index do |group, idx|
+        name = "system_groups_#{idx}"
+        Facter.add(name) do
+            setcode do
+                answer = group
+            end
+        end
+    end
+else
+    Facter.add(:system_owners) do
+        setcode do
+            answer = data['system_owners']
+        end
+    end
+
+    Facter.add(:system_groups) do
+        setcode do
+            answer  = data['system_groups']
+        end
+    end
+end

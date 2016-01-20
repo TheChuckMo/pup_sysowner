@@ -40,6 +40,8 @@ config = {
     'so_python_install'         =>  scope.lookupvar("sysowner::config::python_install"),
     'so_python_pkg'             =>  scope.lookupvar("sysowner::config::python_pkg"),
     'so_python_yaml_pkg'        =>  scope.lookupvar("sysowner::config::python_yaml_pkg")
-}
--%>
-<%= YAML.dump(config) %>
+} -%>
+<%= YAML.dump(config) -%>
+<% @clients.each do |client, value| -%>
+<%= "clients_#{client}: #{value}" %>
+<% end -%>

@@ -8,62 +8,93 @@
 #
 import sys, yaml
 #
-
-def load_facts():
-    pass
-
-
+# class SysOwner:
+#
 class SysOwner:
     # gets config/data
-
     def __init__(self, debug=False):
+        # set debug status
         self.debug = debug
         if self.debug:
-            print "DEBUG: debug set to {debug}".format(debug=debug)
+            sys.stderr.write("DEBUG: debug set to {debug}".format(debug=debug))
 
-        with open('/etc/sysowner/sysowner.yaml', 'r') as raw:
-            self.data = yaml.load(raw)
+        # load data from config file
+        with open('/etc/sysowner/sysowner.yaml', 'r') as config:
+            self.data = yaml.load(config)
+
+        # flat_facts
+        self.flat_facts = self.data['flat_facts']
+
+    def __str__(self):
+        return self.data
+
+    #def add_client(self):
+    #    for client in self.data['clients']:
+    #        self.data['clients']['clients_{client}'.format(client=client)]
 
     def go(self, command):
+        '''
+        Run SysOwner go commands
+        :param command:
+        :return: commands method
+        '''
         if self.debug:
-            print 'DEBUG: finding command {command}'.format(command=command)
+            sys.stderr.write('DEBUG: finding command {command}\n'.format(command=command))
 
+        # run module
         return getattr(self, 'go_' + command.upper(), None)
 
-    def go_FACT(self, fact):
-        if self.debug:
-            print 'DEBUG: running go_FACT'
+    def go_FACT(self, fact=None):
+        '''
 
+        :param fact:
+        :return:
+        '''
+        if self.debug:
+            sys.stderr.write('DEBUG: running go_FACT\n')
+
+        # act on fact - fun to say
         if fact in self.data.keys():
             try:
-                if self.data[]
-                print '{fact}={value}'.format(fact=fact, value=self.data[fact])
+                if self.flat_facts:
+                    value = str(self.data[fact])
+                else:
+                    value = self.data[fact]
 
-                return self.data[fact]
-                #else:
-                #    print '{fact}={value}'.format(fact=fact, value=SysOwner.data[fact])
-                #    return SysOwner.data[fact]
-            except:
-                print '{fact}='.format(fact=fact)
+                return value
+            except ValueError as error:
+                sys.stderr.write('Invalid fact - ' + ', '.join(error.args) + '\n')
                 return
         else:
-            print 'ERROR: {fact} not a valid fact.'.format(fact=fact)
+            #sys.stderr.write('ERROR: {fact} not a valid fact.\n'.format(fact=fact))
             return
 
     def go_CONFIG(self):
-        print yaml.dump(self.data)
-        return yaml.dump(self.data)
+        '''
 
-    def go_unknown(self):
+        :return:
+        '''
+        if self.debug:
+            sys.stderr.write('DEBUG: running go_CONFIG\n')
+
+        # output yaml
+        sys.stdout.write(yaml.dump(self.data))
+        return self.data
+
+    def go_UNKNOWN(self):
+        '''
+
+        :return:
+        '''
+        if self.debug:
+            sys.stderr.write('DEBUG: running go_UNKNOWN\n')
+
         raise NotImplementedError, 'unknown command'
-
-
 #
 # main
 #
 def main():
     '''
-    :param argv:
     :return:
     '''
     # list of valid commands
@@ -78,19 +109,21 @@ def main():
         exit()
 
     # verify command is supported
-    #if command not in commands:
-    #    print 'ERROR: {name} command not found.'.format(name=command)
-    #    exit()
+    if command not in commands:
+        print 'ERROR: {name} command not found.'.format(name=command)
+        exit()
 
-    # create SysOwner to run commands
-    #run = SysOwner(debug=True)
-    run = SysOwner()
+    # create SysOwner to sysowner commands
+    sysowner = SysOwner()
 
-    # run SysOwner processing
+    # SysOwner go processing
     if command == 'fact':
-        run.go(command)(sys.argv[2])
+        if len(sys.argv) > 2:
+            fact = sys.argv[2]
+            value = sysowner.go(command)(fact)
+            print '{fact}={value}'.format(fact=fact, value=value)
     elif command == 'config':
-        run.go(command)()
+        sysowner.go(command)()
 
 if __name__ == "__main__":
     main()
