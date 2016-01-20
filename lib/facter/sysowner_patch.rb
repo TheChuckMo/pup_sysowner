@@ -2,7 +2,11 @@
 # sysowner patch facts
 require 'yaml'
 
-raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
+if File.file?(config)
+    raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
+else
+    exit 0
+fi
 
 if raw['patch_method'] == 'cron'
     data = {

@@ -3,7 +3,13 @@
 #
 require 'yaml'
 
-raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
+config = '/etc/sysowner/sysowner.yaml'
+
+if File.file?(config)
+    raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
+else
+    exit 0
+fi
 
 data = {
     # owners
