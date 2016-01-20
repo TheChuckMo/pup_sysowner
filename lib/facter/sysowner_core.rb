@@ -9,7 +9,7 @@ if File.file?(config)
     raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
 else
     exit 0
-fi
+end
 
 data = {
     # owners
