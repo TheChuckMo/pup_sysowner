@@ -1,15 +1,22 @@
 #
 # sysowner patch facts
-require 'yaml'
-
+#
 config = '/etc/sysowner/sysowner.yaml'
-
 if File.file?(config)
-    raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
-
+    #
+    # we have a file!
+    #
+    require 'yaml'
+    #
+    # import the config file
+    #
+    raw = YAML.load_file(config)
+    #
+    # Clean up the data - only show the facts we need
+    #
     if raw['patch_method'] == 'cron'
         data = {
-            # patch method
+            # patch method - cron
             'patch_method'                      => raw['patch_method'],
             # cron facts
             'patch_cron_reboot'                 => raw['cron_reboot'],
@@ -18,12 +25,11 @@ if File.file?(config)
             'patch_cron_monthday'               => raw['cron_monthday'],
             'patch_cron_month'                  => raw['cron_month'],
             'patch_cron_weekday'                => raw['cron_weekday'],
-            'patch_cron_script_src'             => raw['cron_script_src'],
-            'patch_cron_script_dst'             => raw['cron_script_dst'],
+            'patch_cron_script'                 => raw['cron_script_dst']
         }
     elsif raw['patch_method'] == 'yum_crom'
         data = {
-            # patch method
+            # patch method - yum_cron
             'patch_method'                      => raw['patch_method'],
             # yum_cron facts
             'patch_yum_cron_apply_updates'      => raw['yum_cron_apply_updates'],
@@ -33,6 +39,9 @@ if File.file?(config)
             'patch_yum_cron_mailto'             => raw['yum_cron_mailto']
         }
     else
+        #
+        # this should be "disable" - should it be forced?
+        #
         data = { 'patch_method'                 => raw['patch_method'] }
     end
     #
@@ -53,7 +62,7 @@ else
     #
     Facter.add(:sysowner_patch) do
         setcode do
-            answer = 'no facts'
+            answer = 'no-facts'
         end
     end
 end

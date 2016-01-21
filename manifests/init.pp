@@ -1,4 +1,3 @@
-# Class: sysowner
 #
 # See README.md for info
 #
@@ -28,11 +27,6 @@ class sysowner (
     # user in hiera ex: "oraclient_%{::sysowner:oracle_client}" => oraclient_true.yaml
     #
     $clients = { 'oracle' => false, }, # client facts to create ex: oracle_client = true
-    #
-    # Control of facts
-    #
-    #$fact_template    = 'sysowner/system_owner_facts.erb', # ERB template for fact file
-    #$fact_file        = '/etc/facter/facts.d/system_owner_facts.yaml', # location of fact file on system
 ) {
     # verify system_owners and system_groups
     validate_array($system_owners)
@@ -42,6 +36,7 @@ class sysowner (
     validate_hash($clients)
 
     # TODO: validate the clients hash values are boolean?
+    # I don't know how to do this.
     # validate_bool_in_hash($clients)? what?
 
     # include patch control

@@ -1,3 +1,6 @@
+#
+# sysowner::config
+#
 class sysowner::config (
     #
     # command configuration
@@ -10,7 +13,6 @@ class sysowner::config (
     $python_pkg       = "python", # name of package with python
     $python_yaml_pkg  = "PyYAML", # name of package with python PyYAML module
     #
-
     $flat_facts        = true, # sysowner1 or sysowner[1]
 ) {
   # verify boolean values

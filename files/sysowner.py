@@ -1,8 +1,8 @@
 #!/bin/env python
 #
-# sysowner - Chuck Moreland @TheChuckMo
+# sysowner - Chuck Moreland
 #
-
+##########
 #
 # important statement
 #
