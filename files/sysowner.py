@@ -22,9 +22,6 @@ class SysOwner:
         with open('/etc/sysowner/sysowner.yaml', 'r') as config:
             self.data = yaml.load(config)
 
-        # flat_facts
-        self.flat_facts = self.data['flat_facts']
-
     def __str__(self):
         return self.data
 
@@ -56,11 +53,7 @@ class SysOwner:
         # act on fact - fun to say
         if fact in self.data.keys():
             try:
-                if self.flat_facts:
-                    value = str(self.data[fact])
-                else:
-                    value = self.data[fact]
-
+                value = self.data[fact]
                 return value
             except ValueError as error:
                 sys.stderr.write('Invalid fact - ' + ', '.join(error.args) + '\n')

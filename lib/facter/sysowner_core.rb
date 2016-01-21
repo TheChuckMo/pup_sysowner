@@ -34,9 +34,9 @@ if File.file?(config)
     #
     # build clients facts
     #
-    data['clients'].each_with_index do |client, idx|
+    data['clients'].each do |client, value|
         name = "clients_#{client}"
-        data[name] = raw['clients'][client]
+        data[name] = value
     end
     #
     # system_owners

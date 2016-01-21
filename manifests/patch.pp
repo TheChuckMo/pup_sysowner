@@ -8,7 +8,7 @@ class sysowner::patch (
     # cron: runs script from cron
     # yum_cron: uses treydock/yum-cron module to configure yum_cron
     # cron script variables
-    $cron_reboot = False, # should system reboot after patch install
+    $cron_reboot = false, # should system reboot after patch install
     $cron_minute = '45', # minute of the hour for patch install
     $cron_hour = '3', # hour of the day for patch install
     $cron_monthday = '15', # day of month for patch install
@@ -30,76 +30,74 @@ class sysowner::patch (
     # minimal-security-severity:Critical = --sec-severity = Critical upgrade-minimal
 ) {
 
-# verify patch method
-validate_re($method, [ '^disable', '^cron', '^yum_cron'])
+    # verify patch method
+    validate_re($method, [ '^disable', '^cron', '^yum_cron'])
 
-# verify boolean values
-validate_bool($cron_reboot)
+    # verify boolean values
+    validate_bool($cron_reboot)
 
-# define patch_method settings
-case $method {
-'yum_cron': {
-      # settings for yum_cron
-      $patch_script_ensure = 'absent'
-      $cron_entry_ensure = 'absent'
-      $yum_cron_ensure = 'present'
-      $yum_cron_enable = true
+    # define patch_method settings
+    case $method {
+        'yum_cron': {
+            # settings for yum_cron
+            $patch_script_ensure = 'absent'
+            $cron_entry_ensure = 'absent'
+            $yum_cron_ensure = 'present'
+            $yum_cron_enable = true
+        }
+        'cron': {
+            # settings for cron
+            $patch_script_ensure = 'file'
+            $cron_entry_ensure = 'present'
+            $yum_cron_ensure = 'absent'
+            $yum_cron_enable = false
+
+        }
+        'disable': {
+            # settings for disable
+            $patch_script_ensure = 'absent'
+            $cron_entry_ensure = 'absent'
+            $yum_cron_ensure = 'absent'
+            $yum_cron_enable = false
+        }
+        default: {
+            # disable it all
+            $patch_script_ensure = 'absent'
+            $cron_entry_ensure = 'absent'
+            $yum_cron_ensure = 'absent'
+            $yum_cron_enable = false
+        }
     }
-'cron': {
-      # settings for cron
-      $patch_script_ensure = 'file'
-      $cron_entry_ensure = 'present'
-      $yum_cron_ensure = 'absent'
-      $yum_cron_enable = false
 
+    # patch script configuration
+    file { $cron_script_dst:
+        ensure  => $patch_script_ensure,
+        source  => $cron_script_src,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
     }
-'disable': {
-      # settings for disable
-      $patch_script_ensure = 'absent'
-      $cron_entry_ensure = 'absent'
-      $yum_cron_ensure = 'absent'
-      $yum_cron_enable = false
+
+    # patch script cron entry
+    cron { 'name':
+        ensure => $cron_entry_ensure,
+        user => 'root',
+        hour => $cron_hour,
+        monthday => $cron_monthday,
+        month => $cron_month,
+        weekday => $cron_weekday,
+        command => "${cron_script_dst} ${cron_reboot} ${sysowner::support_contact} > /dev/null 2>&1",
     }
-default: {
-      # disable it all
-      $patch_script_ensure = 'absent'
-      $cron_entry_ensure = 'absent'
-      $yum_cron_ensure = 'absent'
-      $yum_cron_enable = false
+
+
+    # configure yum_cron
+    class { 'yum_cron':
+        ensure           => $yum_cron_ensure,
+        enable           => $yum_cron_enable,
+        mailto           => $yum_cron_mailto,
+        apply_updates    => $yum_cron_apply_updates,
+        download_updates => $yum_cron_download_updates,
+        days_of_week     => $yum_cron_days_of_week,
+        update_cmd       => $yum_cron_update_cmd,
     }
-}
-
-# patch script configuration
-file { $cron_script_dst:
-    ensure  => $patch_script_ensure,
-    source  => $cron_script_src,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-  }
-
-# patch script cron entry
-cron { 'syswoner-patch-install':
-    ensure    => $cron_entry_ensure,
-    user = > 'root',
-    minute = > $cron_minute,
-    hour = > $cron_hour,
-    monthday = > $cron_monthday,
-    month = > $cron_month,
-    weekday = > $cron_weekday,
-    command   => "${cron_script_dst} ${cron_reboot} "
-}
-
-
-# configure yum_cron
-#class { 'yum_cron':
-#ensure           => $yum_cron_ensure,
-#enable           => $yum_cron_enable,
-#mailto           => $yum_cron_mailto,
-#
-#apply_updates    => $yum_cron_apply_updates,
-#download_updates => $yum_cron_download_updates,
-#days_of_week     => $yum_cron_days_of_week,
-#update_cmd       => $yum_cron_update_cmd,
-#}
 }

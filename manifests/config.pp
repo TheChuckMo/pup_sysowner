@@ -15,44 +15,44 @@ class sysowner::config (
     #
     $flat_facts        = true, # sysowner1 or sysowner[1]
 ) {
-  # verify boolean values
-  validate_bool($python_install)
-  validate_bool($flat_facts)
+    # verify boolean values
+    validate_bool($python_install)
+    validate_bool($flat_facts)
 
-  # are we managing python install?
-  if $python_install {
+    # are we managing python install?
+    if $python_install {
         package { 'python':
-            name => $python_pkg,
+            name   => $python_pkg,
             ensure => installed,
         }
         package { 'python-yaml':
-            name => $python_yaml_pkg,
-            ensure => installed,
+            name    => $python_yaml_pkg,
+            ensure  => installed,
             require => Package['python'],
         }
-  }
+    }
 
-	# base directory of fact file locaiton
-	$bindir = dirname($so_cmd)
+    # base directory of fact file locaiton
+    $bindir = dirname($so_cmd)
 
-	# exec to create basedir
-	exec { 'make_bindir':
-		command => "/bin/mkdir -p ${bindir}",
-		unless  => "/bin/ls -d ${bindir}",
-	}
+    # exec to create basedir
+    exec { 'make_bindir':
+        command => "/bin/mkdir -p ${bindir}",
+        unless  => "/bin/ls -d ${bindir}",
+    }
 
-	# sysowner python script
-	file { $so_cmd:
-		ensure => file,
-		source => 'puppet:///modules/sysowner/sysowner.py',
-		owner => 'root',
-		group => 'root',
-		mode => '0755',
-		require => Exec['make_bindir']
-	}
+    # sysowner python script
+    file { $so_cmd:
+        ensure  => file,
+        source  => 'puppet:///modules/sysowner/sysowner.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Exec['make_bindir']
+    }
 
-	# static location of config file
-	$so_config = '/etc/sysowner/sysowner.yaml'
+    # static location of config file
+    $so_config = '/etc/sysowner/sysowner.yaml'
 
     # base directory of fact file locaiton
     $basedir = dirname($so_config)
