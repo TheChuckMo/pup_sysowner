@@ -9,6 +9,7 @@ name='sysowner'
 modpath="${modules}/${name}"
 if [[ -d ${modpath} ]] ;then
     echo "removing existing ${name}"
+    #module=`sudo $puppet module uninstall ${builds} --force | grep "built:" | awk '{print $3}'`
     sudo rm -Rf ${modpath}
 fi
 

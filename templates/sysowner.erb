@@ -36,14 +36,17 @@ config = {
     'so_python_yaml_pkg'        =>  scope.lookupvar("sysowner::config::python_yaml_pkg")
 } -%>
 <%= YAML.dump(config) -%>
-<% @clients.each do |client, value| -%>
+
+<% config['clients'].each do |client, value| -%>
 <%= "clients_#{client}: #{value}" %>
 <% end -%>
-<% @system_owners.each_with_index do |owner, idx| -%>
+
+<% config['system_owners'].each_with_index do |owner, idx| -%>
 <%  name = "system_owners_#{idx}" -%>
 <%= "#{name}: #{owner}" %>
 <% end -%>
-<% @system_groups.each_with_index do |group, idx| -%>
+
+<% config['system_groups'].each_with_index do |group, idx| -%>
 <%  name = "system_groups_#{idx}" -%>
 <%= "#{name}: #{group}" %>
 <% end -%>

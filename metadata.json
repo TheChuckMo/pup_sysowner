@@ -1,6 +1,6 @@
 {
   "name": "thechuckmo-sysowner",
-  "version": "0.6.10",
+  "version": "0.6.12",
   "author": "thechuckmo",
   "summary": "Create facts for system role and clients and set patch method",
   "license": "Apache-2.0",
