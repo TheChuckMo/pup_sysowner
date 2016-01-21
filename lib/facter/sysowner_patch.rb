@@ -20,7 +20,6 @@ if File.file?(config)
             'patch_method'                      => raw['patch_method'],
             # cron facts
             'patch_cron_reboot'                 => raw['cron_reboot'],
-            'patch_cron_weekday'                => raw['cron_weekday'],
             'patch_cron_script'                 => raw['cron_script_dst']
         }
     elsif raw['patch_method'] == 'yum_crom'

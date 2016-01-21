@@ -3,50 +3,60 @@
 # File managed by puppet
 # ## DO NOT EDIT ##
 #
+---
 <%
 require 'yaml'
 
+clients = scope.lookupvar("sysowner::clients")
+
+system_owners = scope.lookupvar("sysowner::system_owners")
+system_groups = scope.lookupvar("sysowner::system_groups")
+
 config = {
-    'system_owners'             =>  scope.lookupvar("sysowner::system_owners"),
-    'system_groups'             =>  scope.lookupvar("sysowner::system_groups"),
     'system_role'               =>  scope.lookupvar("sysowner::system_role"),
     'system_note'               =>  scope.lookupvar("sysowner::system_note"),
     'support_team'              =>  scope.lookupvar("sysowner::support_team"),
     'support_level'             =>  scope.lookupvar("sysowner::support_level"),
     'support_contact'           =>  scope.lookupvar("sysowner::support_contact"),
     'support_pager'             =>  scope.lookupvar("sysowner::support_pager"),
-    'clients'                   =>  scope.lookupvar("sysowner::clients"),
     'patch_method'              =>  scope.lookupvar("sysowner::patch::method"),
     'cron_reboot'               =>  scope.lookupvar("sysowner::patch::cron_reboot"),
-    'cron_minute'               =>  scope.lookupvar("sysowner::patch::cron_minute"),
-    'cron_hour'                 =>  scope.lookupvar("sysowner::patch::cron_hour"),
-    'cron_monthday'             =>  scope.lookupvar("sysowner::patch::cron_monthday"),
-    'cron_month'                =>  scope.lookupvar("sysowner::patch::cron_month"),
-    'cron_weekday'              =>  scope.lookupvar("sysowner::patch::cron_weekday"),
-    'cron_script_src'           =>  scope.lookupvar("sysowner::patch::cron_script_src"),
     'cron_script_dst'           =>  scope.lookupvar("sysowner::patch::cron_script_dst"),
-    'yum_cron_download_updates' =>  scope.lookupvar("sysowner::patch::yum_cron_download_updates"),
-    'yum_cron_days_of_week'     =>  scope.lookupvar("sysowner::patch::yum_cron_days_of_week"),
+    'yum_cron_apply_updates'    =>  scope.lookupvar("sysowner::patch::yum_cron_download_updates"),
     'yum_cron_update_cmd'       =>  scope.lookupvar("sysowner::patch::yum_cron_update_cmd"),
-    'yum_cron_mailto'           =>  scope.lookupvar("sysowner::patch::yum_cron_mailto"),
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
-    'so_python_install'         =>  scope.lookupvar("sysowner::config::python_install"),
-    'so_python_pkg'             =>  scope.lookupvar("sysowner::config::python_pkg"),
-    'so_python_yaml_pkg'        =>  scope.lookupvar("sysowner::config::python_yaml_pkg")
 } -%>
-<%= YAML.dump(config) -%>
+<% config.each do |name, value| -%>
+<%= "#{name}: #{value}" %>
+<% end -%>
 
-<% config['clients'].each do |client, value| -%>
+<% clients.each do |client, value| -%>
 <%= "clients_#{client}: #{value}" %>
 <% end -%>
 
-<% config['system_owners'].each_with_index do |owner, idx| -%>
+<% system_owners.each_with_index do |owner, idx| -%>
 <%  name = "system_owners_#{idx}" -%>
 <%= "#{name}: #{owner}" %>
 <% end -%>
 
-<% config['system_groups'].each_with_index do |group, idx| -%>
+<% system_groups.each_with_index do |group, idx| -%>
 <%  name = "system_groups_#{idx}" -%>
 <%= "#{name}: #{group}" %>
 <% end -%>
+
+clients:
+<% clients.each do |client, value| -%>
+<%= "  - #{client}: #{value}" %>
+<% end -%>
+
+system_owners:
+<% system_owners.each_with_index do |owner, idx| -%>
+<%= "  - #{owner}" %>
+<% end -%>
+
+system_groups:
+<% system_groups.each_with_index do |group, idx| -%>
+<%= "  - #{group}" %>
+<% end -%>
+
