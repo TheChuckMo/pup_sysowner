@@ -8,7 +8,7 @@ config = '/etc/sysowner/sysowner.yaml'
 if File.file?(config)
     raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
 else
-    raw = {}
+    return 0
 end
 
 data = {

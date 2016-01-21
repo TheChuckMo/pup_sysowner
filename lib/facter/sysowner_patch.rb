@@ -2,10 +2,12 @@
 # sysowner patch facts
 require 'yaml'
 
+config = '/etc/sysowner/sysowner.yaml'
+
 if File.file?(config)
     raw = YAML.load_file('/etc/sysowner/sysowner.yaml')
 else
-    raw = {}
+    return 0
 end
 
 if raw['patch_method'] == 'cron'
@@ -34,7 +36,7 @@ elsif raw['patch_method'] == 'yum_crom'
         'patch_yum_cron_mailto'             => raw['yum_cron_mailto']
     }
 else
-    data = { 'patch_method'                      => raw['patch_method'] }
+    data = { 'patch_method'                 => raw['patch_method'] }
 end
 #
 # load all the patch facts
