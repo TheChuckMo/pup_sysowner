@@ -27,7 +27,7 @@ config = {
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
 } -%>
-<% config.each do |name, value| -%>
+<% config.sort.each do |name, value| -%>
 <%= "#{name}: #{value}" %>
 <% end -%>
 
