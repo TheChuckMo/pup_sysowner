@@ -2,32 +2,44 @@
 # sysowner::patch
 #
 class sysowner::patch (
-    # Patch details for system
+    #
+    # set patching method
+    #
     $method = 'disable', # how to patch - yum_cron | cron
-    # disable: do nothing *default*
-    # cron: runs script from cron
-    # yum_cron: uses treydock/yum-cron module to configure yum_cron
+        # disable: do nothing *default*
+        # cron: runs script from cron
+        # yum_cron: uses treydock/yum-cron module to configure yum_cron
+    #
     # cron script variables
-    $cron_reboot = false, # should system reboot after patch install
+    #
+    $cron_reboot = false, # passed to cron script as 1st arguement
+    #
+    # cron entry variables
+    #
     $cron_minute = '45', # minute of the hour for patch install
     $cron_hour = '3', # hour of the day for patch install
     $cron_monthday = '15', # day of month for patch install
     $cron_month = '*', # month of the year for patch install
     $cron_weekday = '1', # day of week for patch install
+    #
+    # cron script
+    #
     $cron_script_src = 'puppet:///modules/sysowner/sysowner_patch_install.sh', # cron script source for patch install
     $cron_script_dst = '/usr/local/bin/sysowner_patch_install.sh', # cron script destination for patch install
+    #
     # yum-cron variables
+    #
     $yum_cron_apply_updates = false, # will apply updates after download
     $yum_cron_download_updates = true, # must me true if apply_updates true
     $yum_cron_days_of_week = '12345', # only check on work-days
     $yum_cron_update_cmd = 'security-severity:Critical', # only valid for =>EL7
     $yum_cron_mailto = $sysowner::support_contact,
-    # default = yum upgrade
-    # security = yum --security upgrade
-    # security-severity:Critical = yum --sec-severity = Critical upgrade
-    # minimal                            = yum --bugfix upgrade-minimal
-    # minimal-security = yum --security upgrade-minimal
-    # minimal-security-severity:Critical = --sec-severity = Critical upgrade-minimal
+        # default = yum upgrade
+        # security = yum --security upgrade
+        # security-severity:Critical = yum --sec-severity = Critical upgrade
+        # minimal                            = yum --bugfix upgrade-minimal
+        # minimal-security = yum --security upgrade-minimal
+        # minimal-security-severity:Critical = --sec-severity = Critical upgrade-minimal
 ) {
 
     # verify patch method
@@ -88,7 +100,6 @@ class sysowner::patch (
         weekday => $cron_weekday,
         command => "${cron_script_dst} ${cron_reboot} ${sysowner::support_contact} > /dev/null 2>&1",
     }
-
 
     # configure yum_cron
     class { 'yum_cron':

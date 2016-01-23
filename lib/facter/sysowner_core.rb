@@ -28,32 +28,23 @@ if File.file?(config)
         'support_level'                     => raw['support_level'],
         'support_contact'                   => raw['support_contract'],
         'support_pager'                     => raw['support_pager'],
-        # clients
-        'clients'                           => raw['clients'],
     }
     #
-    # build clients facts
-    #
-    data['clients'].each do |client, value|
-        name = "clients_#{client}"
-        data[name] = value
-    end
-    #
-    # system_owners
+    # flat system_owners
     #
     data['system_owners'].each_with_index do |owner, idx|
         name = "system_owners_#{idx}"
         data[name] = owner
     end
     #
-    # system_groups
+    # flat system_groups
     #
     data['system_groups'].each_with_index do |group, idx|
         name = "system_groups_#{idx}"
         data[name] = group
     end
     #
-    # load all the facts
+    # load the facts
     #
     data.each do |name, value|
         Facter.add(name) do

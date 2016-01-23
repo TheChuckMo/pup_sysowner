@@ -12,19 +12,18 @@ class sysowner::config (
     $python_install   = true, # should the module install python
     $python_pkg       = "python", # name of package with python
     $python_yaml_pkg  = "PyYAML", # name of package with python PyYAML module
-    #
-    $flat_facts        = true, # sysowner1 or sysowner[1]
 ) {
     # verify boolean values
     validate_bool($python_install)
-    validate_bool($flat_facts)
 
     # are we managing python install?
     if $python_install {
+        # install python
         package { 'python':
             name   => $python_pkg,
             ensure => installed,
         }
+        # install yaml python module
         package { 'python-yaml':
             name    => $python_yaml_pkg,
             ensure  => installed,
@@ -63,7 +62,7 @@ class sysowner::config (
         unless  => "/bin/ls -d ${basedir}",
     }
 
-    # config file for sysowner
+    # config file for sysowner - for facts
     file { $so_config:
         ensure  => file,
         content => template('sysowner/sysowner.erb'),
