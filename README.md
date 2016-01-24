@@ -69,7 +69,7 @@ sysowner::support_contact:  'root@localhost'
   - disable: Will remove script or yum_cron configuration 
   - cron: Push out a custom script (you write) and create a cron entry to run script. 
   - yum_cron: Use the yum_cron tool to schedule patching and set installed patch level.
-    *uses Puppet module: [treydock/yum_cron::update_cmd](https://forge.puppetlabs.com/treydock/)
+    *requires Puppet module: [treydock/yum_cron::update_cmd](https://forge.puppetlabs.com/treydock/)
 ### disable 
 ```
 sysowner::patch::method:            'disable'
@@ -96,7 +96,7 @@ sysowner::patch::yum_cron_update_cmd:       'minimal-security'
 ```
 ##### sysowner::patch_update_cmd (only valid on EL7)
   - [treydock/yum_cron::update_cmd](https://forge.puppetlabs.com/treydock/yum_cron#update_cmd)
-  - sysowner defaults to minimal-security
+  - sysowner default is *'security-severity:Critical'*
 ```
 > default                            = yum upgrade
 > security                           = yum --security upgrade
