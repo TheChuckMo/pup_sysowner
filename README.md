@@ -109,8 +109,10 @@ sysowner::patch::yum_cron_update_cmd:       'minimal-security'
 ### System Info
 ```
 system_groups => ["AD HW Fans"]
+system_groups_0 => "AD HW Fans"
 system_note => General Purpose Server
 system_owners => ["Henry Winkler"]
+system_owners_0 = "Hentry Winkler"
 system_role => general
 support_contact => root@localhost
 support_level => no-page
@@ -123,15 +125,14 @@ patch_method => disable
 ### patch_method: cron
 ```
 patch_method => cron
-patch_cron => 45 3 15 * 1
-patch_script => /usr/local/bin/sysowner_patch_install.sh
+patch_cron_reboot => False
+patch_cron_script => /usr/local/bin/sysowner_patch_install.sh
 ```
 ### patch_method: yum_cron
 ```
 patch_method => yum_cron
-patch_days_of_week => 12345
-patch_download_updates => true
-patch_update_cmd => minimal-security
+patch_yum_cron_apply_updates => true
+patch_yum_cron_update_cmd => minimal-security
 ```
 ## Requires
 
