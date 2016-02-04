@@ -7,8 +7,6 @@
 <%
 require 'yaml'
 
-clients = scope.lookupvar("sysowner::clients")
-
 system_owners = scope.lookupvar("sysowner::system_owners")
 system_groups = scope.lookupvar("sysowner::system_groups")
 
@@ -31,10 +29,6 @@ config = {
 <%= "#{name}: #{value}" %>
 <% end -%>
 
-<% clients.each do |client, value| -%>
-<%= "clients_#{client}: #{value}" %>
-<% end -%>
-
 <% system_owners.each_with_index do |owner, idx| -%>
 <%  name = "system_owners_#{idx}" -%>
 <%= "#{name}: #{owner}" %>
@@ -43,11 +37,6 @@ config = {
 <% system_groups.each_with_index do |group, idx| -%>
 <%  name = "system_groups_#{idx}" -%>
 <%= "#{name}: #{group}" %>
-<% end -%>
-
-clients:
-<% clients.each do |client, value| -%>
-<%= "  #{client}: #{value}" %>
 <% end -%>
 
 system_owners:
