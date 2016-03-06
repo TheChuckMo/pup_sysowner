@@ -8,9 +8,9 @@
 require 'yaml'
 
 system_owners = scope.lookupvar("sysowner::system_owners")
-system_groups = scope.lookupvar("sysowner::system_groups")
 
 config = {
+    'system_group'              =>  scope.lookupcat("sysowner::system_group"),
     'system_role'               =>  scope.lookupvar("sysowner::system_role"),
     'system_note'               =>  scope.lookupvar("sysowner::system_note"),
     'support_team'              =>  scope.lookupvar("sysowner::support_team"),
@@ -25,6 +25,7 @@ config = {
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
 } -%>
+
 <% config.sort.each do |name, value| -%>
 <%= "#{name}: #{value}" %>
 <% end -%>
@@ -34,18 +35,8 @@ config = {
 <%= "#{name}: #{owner}" %>
 <% end -%>
 
-<% system_groups.each_with_index do |group, idx| -%>
-<%  name = "system_groups_#{idx}" -%>
-<%= "#{name}: #{group}" %>
-<% end -%>
-
 system_owners:
 <% system_owners.each_with_index do |owner, idx| -%>
 <%= "  - #{owner}" %>
-<% end -%>
-
-system_groups:
-<% system_groups.each_with_index do |group, idx| -%>
-<%= "  - #{group}" %>
 <% end -%>
 
