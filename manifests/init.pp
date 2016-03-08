@@ -30,7 +30,7 @@ class sysowner (
     #
     # group/team owner of system
     #
-    $system_group = ['hwadmins',], # string of group
+    $system_group = 'hwadmins', # string of group
     #
     # role: one per system - in hiera ex: "roles/%{::system_role}" => roles/webproxy.yaml
     #
