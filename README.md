@@ -27,9 +27,8 @@ sysowner::system_role: 'mydb'
 # ./roles/mydb.yaml
 sysowner::system_owners:
     - myadmin1
-    - myadmin1
-sysowner::system_groups:
-    - "MySQL Admins"
+    - myadmin2
+sysowner::system_group: "hwadmins"
 sysowner::system_note: 'MySQL Database Server'
 
 classes:
