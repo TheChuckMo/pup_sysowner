@@ -3,7 +3,7 @@
 Create facts to be used for system management like owner of systems services and method of patching. Assigning a role allows configuration to be grouped. 
 
   - system_owners: Contact id for users who are responsible for the services provided by the system. 
-  - system_groups: External security groups for the system or
+  - system_group: group or team responsible for the delivered services.
   - system_role: Used to define configuration for a collection of systems. 
   - system_note: Short description of usage of server. 
   
@@ -40,16 +40,15 @@ classes:
 
 ### Basic system info
   - system_owners: free form array of "system owners", could be emails, local account, names
-  - system_groups: free form array of "system owner groups", AD groups, local unix groups, team names
-  - system_role: free form string. ex: general | web | mysql | oracle | etl | epic
+  - system_group: free form string for team or group. ex: finance | dbas | webx
+  - system_role: free form string. ex: general | apache | mysql | oracle | etl | epic
     * use in hiera. ex: "roles/%{::system_role}" => roles/web.yaml
   - system_note: free form string to describe the server
   
 ```
 sysowner::system_owners: 
   - Henry Winkler
-sysowner::system_groups:
-   - AD HW Fans
+sysowner::system_group: 'hwadmins'
 sysowner::system_role:  'general'
 sysowner::system_note:  'General Purpose Server'
 ```
@@ -108,8 +107,7 @@ sysowner::patch::yum_cron_update_cmd:       'minimal-security'
 ## Facts Created
 ### System Info
 ```
-system_groups => ["AD HW Fans"]
-system_groups_0 => "AD HW Fans"
+system_group => 'hwadmins' 
 system_note => General Purpose Server
 system_owners => ["Henry Winkler"]
 system_owners_0 = "Hentry Winkler"
