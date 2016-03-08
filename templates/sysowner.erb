@@ -10,7 +10,7 @@ require 'yaml'
 system_owners = scope.lookupvar("sysowner::system_owners")
 
 config = {
-    'system_group'              =>  scope.lookupcat("sysowner::system_group"),
+    'system_group'              =>  scope.lookupvar("sysowner::system_group"),
     'system_role'               =>  scope.lookupvar("sysowner::system_role"),
     'system_note'               =>  scope.lookupvar("sysowner::system_note"),
     'support_team'              =>  scope.lookupvar("sysowner::support_team"),
