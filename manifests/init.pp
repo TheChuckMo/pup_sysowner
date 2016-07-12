@@ -16,6 +16,10 @@ class sysowner (
     #
     $system_note = 'General Purpose Server', # free text to describe the server
     #
+    # set fact for system authentication and authorization
+    #
+    $system_auth = 'local',
+    #
     # Support information for system
     #
     $support_team = 'unix team', # free text of support team name

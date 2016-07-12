@@ -23,6 +23,8 @@ if File.file?(config)
         'system_role'                       => raw['system_role'],
         # system note
         'system_note'                       => raw['system_note'],
+        # system auth
+        'system_auth'                       => raw['system_auth'],
         # support info
         'support_team'                      => raw['support_team'],
         'support_level'                     => raw['support_level'],
