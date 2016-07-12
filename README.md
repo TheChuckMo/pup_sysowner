@@ -6,7 +6,7 @@ Create facts to be used for system management like owner of systems services and
   - system_group: group or team responsible for the delivered services.
   - system_role: Used to define configuration for a collection of systems. 
   - system_note: Short description of usage of server. 
-  
+  - system_auth: Identify the method of Authentication for the system.  
 ### ex: in code 
 ```
 case $sysowner::system_role {
@@ -42,6 +42,7 @@ classes:
   - system_group: free form string for team or group. ex: finance | dbas | webx
   - system_role: free form string. ex: general | apache | mysql | oracle | etl | epic
     * use in hiera. ex: "roles/%{::system_role}" => roles/web.yaml
+  - system_auth: free form string to set fact based on authentication method
   - system_note: free form string to describe the server
   
 ```
