@@ -17,8 +17,8 @@ if File.file?(config)
     data = {
         # system owners
         'system_owners'                     => raw['system_owners'],
-        # system groups
-        'system_groups'                     => raw['system_groups'],
+        # system group
+        'system_group'                      => raw['system_group'],
         # system role
         'system_role'                       => raw['system_role'],
         # system note
@@ -37,13 +37,6 @@ if File.file?(config)
     data['system_owners'].each_with_index do |owner, idx|
         name = "system_owners_#{idx}"
         data[name] = owner
-    end
-    #
-    # flat system_groups
-    #
-    data['system_groups'].each_with_index do |group, idx|
-        name = "system_groups_#{idx}"
-        data[name] = group
     end
     #
     # load the facts

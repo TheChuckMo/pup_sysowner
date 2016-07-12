@@ -25,10 +25,6 @@ class SysOwner:
     def __str__(self):
         return self.data
 
-    #def add_client(self):
-    #    for client in self.data['clients']:
-    #        self.data['clients']['clients_{client}'.format(client=client)]
-
     def go(self, command):
         '''
         Run SysOwner go commands
