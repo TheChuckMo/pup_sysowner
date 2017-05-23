@@ -7,9 +7,9 @@
 #  List of users and/or distribution lists of stake holders of the system.
 #  - Will includes owners from node, role, and group.
 #
-# sysowner::system_class:
-#   System configuration based on a class definition. Customization to the class is done in a role.
-#   - A class allows a default config for a hosts primary job (oracle, mysql, etc)
+# sysowner::system_type:
+#   System configuration based on a type definition. Customization to the type is done in a role.
+#   - A type allows a default config for a hosts primary job (oracle, mysql, etc)
 #   - Class configuration is customized with a role
 #   - examples: mysql-db, oracle-db, weblogic, nginx, apache
 #
@@ -24,7 +24,7 @@
 #  - A group config will be included into the system configuration, primarily a list of system_owners
 #  - Define group configuration needed by group administrators (banner logins, custom sudo, etc)
 #  - examples: finance, webx, dw, clinics
-#
+#''
 # sysowner::system_note:
 #  Free form string description of system.
 #
@@ -32,47 +32,67 @@ class sysowner (
   #
   # owners of the system
   #
-  $system_owners    = $sysowner::params::system_owners,
+  $system_owners    = ['winklerh'],
   #
   # class: base host configuration - hiera: "roles/%{::system_class}"
   #
-  $system_class      = $sysowner::params::system_class,
+  $system_type      = 'common',
   #
   # role: customize class - hiera ex: "class/%{::system_class}"
   #
-  $system_role      = $sysowner::params::system_role,
+  $system_role      = 'general',
   #
   # group: Owner and user envrionment configuration
   #
-  $system_group     = $sysowner::params::system_group,
+  $system_group     = 'hwadmins',
   #
   # short description of server (define in role or node config)
   #
-  $system_note      = $sysowner::params::system_note,
+  $system_note      = 'General Purpose Server',
   #
   # set fact for system authentication and authorization
   #
-  $system_auth      = $sysowner::params::system_auth,
+  $auth_methods     = ['local', 'centrify'],
+  $system_auth      = 'local',
   #
   # Support information for system
   #
-  $support_team     = $sysowner::params::support_team,
-  $support_level    = $sysowner::params::support_level,
-  $support_pager    = $sysowner::params::support_pager,
-  $support_contact  = $sysowner::params::support_contact,
+  $support_team     = 'unix team',
+  $support_level    = 'no-page',
+  $support_pager    = 'unix-oncall',
+  $support_contact  = 'root@localhost',
   #
-  # Control patching control (deprecating support)
+  # manage yum here? (deprecating support)
   #
   $manage_yum_cron = true,
   #
-) inherits sysowner::params {
+) {
 
   # verify system_owners
   validate_array($system_owners)
 
-  # verify system_groups
+  # verify system_type
+  validate_string($system_type)
+
+  # verify system_role
+  validate_string($system_role)
+
+  # verify system_group
   validate_string($system_group)
 
+  # verify system_note
+  validate_string($system_note)
+
+  # verify auth_methods
+  validate_array($auth_methods)
+
+  # verify system_auth
+  validate_string($system_auth)
+  if ! ($system_auth in $auth_methods) {
+    fail("invalid method: ${system_auth}")
+  }
+
+  # build sysowner config
   include sysowner::config
 
   if $manage_yum_cron {
