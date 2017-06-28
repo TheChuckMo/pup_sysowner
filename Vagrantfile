@@ -1,74 +1,56 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
-Vagrant.configure(2) do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
+Vagrant.configure("2") do |config|
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "puppetlabs/centos-7.0-64-puppet"
+  # Define Box
+  config.vm.define "rhel7" do |rhel7|
+    rhel7.vm.box_url = "http://uxtools.ohsu.edu/vagrant/uxrhel73.json"
+    rhel7.vm.box = "ux/uxrhel73"
+    rhel7.vm.hostname = "rhel7"
+  end
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+  config.vm.define "rhel6" do |rhel6|
+    rhel6.vm.box_url = "http://uxtools.ohsu.edu/vagrant/uxrhel69.json"
+    rhel6.vm.box = "ux/uxrhel69"
+    rhel6.vm.hostname = "rhel69"
+  end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # Subscription-Manager
+  if Vagrant.has_plugin?('vagrant-registration')
+    # Don't register
+    #config.registration.skip  = true
+    #
+    # Register with Satellite server
+    config.registration.serverurl = "https://ucatlx01.ohsu.edu:443/rhsm"
+    config.registration.baseurl = "https://ucatlx01.ohsu.edu/pulp/repos"
+    config.registration.org = "UCAT"
+    config.registration.activationkey = "act-lab-rhel73-base"
+    #
+    # Register with Red Hat directly
+    # EPEL NOT availble directly from Red Hat
+    #config.registration.serverurl = "https://subscription.rhsm.redhat.com:443/subscription"
+    #config.registration.baseurl = "https://cdn.redhat.com"
+    #config.registration.org = "******"
+    #config.registration.activationkey = "act******"
+  end
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 2182, host: 2182, host_ip: "127.0.0.1"
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  config.vm.network "public_network"
+  config.vm.provision "shell", inline: 'yum clean all'
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
+  config.vm.provision "puppet" do |puppet|
+    puppet.facter = {
+      "vagrant" => "1"
+    }
+    puppet.hiera_config_path = "puppet/hiera.yaml"
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file = "site.pp"
+    puppet.module_path = "puppet/modules"
+  end
+
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
-  # such as FTP and Heroku are also available. See the documentation at
-  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  # config.push.define "atlas" do |push|
-  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
-  # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    sudo yum makecache fast
-    sudo yum update
-    ls -l /opt/puppetlabs/bin/puppet || sudo yum install -y puppet
-    [ ! -x /vagrant/vg_mod_build.sh ] && chmod 755 /vagrant/vg_mod_*.sh
-    [ -x /vagrant/vg_mod_build.sh ] && /vagrant/vg_mod_build.sh
-  SHELL
 end
+
