@@ -17,8 +17,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -179,3 +177,4 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+.vagrant/

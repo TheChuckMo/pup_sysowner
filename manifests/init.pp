@@ -24,7 +24,7 @@
 #  - A group config will be included into the system configuration, primarily a list of system_owners
 #  - Define group configuration needed by group administrators (banner logins, custom sudo, etc)
 #  - examples: finance, webx, dw, clinics
-#''
+#
 # sysowner::system_note:
 #  Free form string description of system.
 #
@@ -62,10 +62,6 @@ class sysowner (
   $support_pager    = 'unix-oncall',
   $support_contact  = 'root@localhost',
   #
-  # manage yum here? (deprecating support)
-  #
-  $manage_yum_cron = true,
-  #
 ) {
 
   # verify system_owners
@@ -94,10 +90,5 @@ class sysowner (
 
   # build sysowner config
   include sysowner::config
-
-  if $manage_yum_cron {
-    # include patch control
-    include sysowner::patch
-  }
 
 }

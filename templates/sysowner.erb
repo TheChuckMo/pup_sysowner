@@ -8,6 +8,7 @@
 require 'yaml'
 
 system_owners = scope.lookupvar("sysowner::system_owners")
+system_tags   = scope.lookupvar("sysowner::system_tags")
 
 config = {
     'system_type'               =>  scope.lookupvar("sysowner::system_type"),
@@ -19,11 +20,8 @@ config = {
     'support_level'             =>  scope.lookupvar("sysowner::support_level"),
     'support_contact'           =>  scope.lookupvar("sysowner::support_contact"),
     'support_pager'             =>  scope.lookupvar("sysowner::support_pager"),
-    'patch_method'              =>  scope.lookupvar("sysowner::patch::method"),
-    'cron_reboot'               =>  scope.lookupvar("sysowner::patch::cron_reboot"),
-    'cron_script_dst'           =>  scope.lookupvar("sysowner::patch::cron_script_dst"),
-    'yum_cron_apply_updates'    =>  scope.lookupvar("sysowner::patch::yum_cron_download_updates"),
-    'yum_cron_update_cmd'       =>  scope.lookupvar("sysowner::patch::yum_cron_update_cmd"),
+    'patch_group'               =>  scope.lookupvar("sysowner::patch_group"),
+    'reboot_group'              =>  scope.lookupvar("sysowner::reboot_group"),
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
 } -%>
@@ -42,3 +40,12 @@ system_owners:
 <%= "  - #{owner}" %>
 <% end -%>
 
+<% system_tags.each_with_index do |tag, idx| -%>
+<%  name = "system_tags_#{idx}" -%>
+<%= "#{name}: #{tag}" %>
+<% end -%>
+
+system_tags:
+<% system_tags.each_with_index do |tag, idx| -%>
+<%= "  - #{tag}" %>
+<% end -%>
