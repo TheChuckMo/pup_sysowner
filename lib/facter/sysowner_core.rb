@@ -17,6 +17,8 @@ if File.file?(config)
     data = {
         # system owners
         'system_owners'                     => raw['system_owners'],
+        # system type
+        'system_type'                       => raw['system_type'],
         # system group
         'system_group'                      => raw['system_group'],
         # system role
