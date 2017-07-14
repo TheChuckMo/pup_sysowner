@@ -27,6 +27,9 @@ if File.file?(config)
         'system_note'                       => raw['system_note'],
         # system auth
         'system_auth'                       => raw['system_auth'],
+        # patch & reboot group
+        'patch_group'                       => raw['patch_group'],
+        'reboot_group'                      => raw['reboot_group'],
         # support info
         'support_team'                      => raw['support_team'],
         'support_level'                     => raw['support_level'],

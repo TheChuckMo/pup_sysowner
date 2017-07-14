@@ -62,6 +62,10 @@ class sysowner (
   $support_pager    = 'unix-oncall',
   $support_contact  = 'root@localhost',
   #
+  # patch and reboot groups
+  #
+  $patch_group      = 'none',
+  $reboot_group     = 'none',
 ) {
 
   # verify system_owners
@@ -85,7 +89,7 @@ class sysowner (
   # verify system_auth
   validate_string($system_auth)
   if ! ($system_auth in $auth_methods) {
-    fail("invalid method: ${system_auth}")
+    fail("invalid authentication method: ${system_auth}")
   }
 
   # build sysowner config

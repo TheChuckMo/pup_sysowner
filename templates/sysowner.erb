@@ -8,7 +8,6 @@
 require 'yaml'
 
 system_owners = scope.lookupvar("sysowner::system_owners")
-system_tags   = scope.lookupvar("sysowner::system_tags")
 
 config = {
     'system_type'               =>  scope.lookupvar("sysowner::system_type"),
@@ -25,27 +24,14 @@ config = {
     'so_cmd'                    =>  scope.lookupvar("sysowner::config::so_cmd"),
     'so_config'                 =>  scope.lookupvar("sysowner::config::so_config"),
 } -%>
-
 <% config.sort.each do |name, value| -%>
 <%= "#{name}: #{value}" %>
 <% end -%>
-
 <% system_owners.each_with_index do |owner, idx| -%>
 <%  name = "system_owners_#{idx}" -%>
 <%= "#{name}: #{owner}" %>
 <% end -%>
-
 system_owners:
 <% system_owners.each_with_index do |owner, idx| -%>
 <%= "  - #{owner}" %>
-<% end -%>
-
-<% system_tags.each_with_index do |tag, idx| -%>
-<%  name = "system_tags_#{idx}" -%>
-<%= "#{name}: #{tag}" %>
-<% end -%>
-
-system_tags:
-<% system_tags.each_with_index do |tag, idx| -%>
-<%= "  - #{tag}" %>
 <% end -%>
