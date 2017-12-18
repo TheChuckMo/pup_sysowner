@@ -178,3 +178,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .vagrant/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/pup_sysowner.iml
+.idea/vcs.xml
