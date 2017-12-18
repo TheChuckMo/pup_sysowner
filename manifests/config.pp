@@ -19,16 +19,20 @@ class sysowner::config (
     # are we managing python install?
     if $python_install {
         # install python
-        package { 'python':
-            name   => $python_pkg,
-            ensure => installed,
-        }
+        ensure_packages($python_pkg, {ensure => 'present'})
+        # install yaml
+        ensure_packages($python_yaml_pkg, {ensure => 'present'})
+
+        #package { 'python':
+        #    name   => $python_pkg,
+        #    ensure => installed,
+        #}
         # install yaml python module
-        package { 'python-yaml':
-            name    => $python_yaml_pkg,
-            ensure  => installed,
-            require => Package['python'],
-        }
+        #package { 'python-yaml':
+        #    name    => $python_yaml_pkg,
+        #    ensure  => installed,
+        #    require => Package['python'],
+        #}
     }
 
     # base directory of fact file locaiton
